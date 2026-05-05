@@ -1,4 +1,11 @@
+using AspNET.API.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ApplicationContext>(options => {
+    options.UseOracle(builder.Configuration.GetConnectionString("Oracle"));
+});
 
 // Add services to the container.
 
