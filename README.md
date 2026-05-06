@@ -40,26 +40,6 @@ Sendo utilizada como parte de avaliação prática (CP2), aplicando conceitos de
 
 ---
 
-### 🔹 Configuração da Connection String
-
-No arquivo:
-
-```
-appsettings.Development.json
-```
-
-Configure a conexão com o Oracle:
-
-```json
-{
-  "ConnectionStrings": {
-    "Oracle": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=HOST:PORTA/SERVICE_NAME;"
-  }
-}
-```
-
----
-
 ## ▶️ Como Executar o Projeto
 
 1. Clone o repositório:
@@ -97,36 +77,6 @@ https://localhost:7001/swagger
 ```
 
 Ou a porta configurada no seu ambiente.
-
----
-
-## 🗃️ Migrations
-
-### Criar migration:
-
-```
-Add-Migration NomeDaMigration
-```
-
-ou
-
-```
-dotnet ef migrations add NomeDaMigration
-```
-
----
-
-### Atualizar banco:
-
-```
-Update-Database
-```
-
-ou
-
-```
-dotnet ef database update
-```
 
 ---
 
@@ -172,20 +122,6 @@ StoreAPI_CP2
 * POST /Produto
 * PUT /Produto/{id}
 * DELETE /Produto/{id}
-
----
-
-## ⚠️ Observações Importantes
-
-* O arquivo `appsettings.Development.json` pode não ser versionado no Git
-* Certifique-se de que a connection string está correta
-* O banco Oracle deve estar acessível (rede/VPN, se necessário)
-
----
-
-## 👨‍💻 Autor
-
-Projeto desenvolvido para fins acadêmicos (CP2).
 
 ---
 
