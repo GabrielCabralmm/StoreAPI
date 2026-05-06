@@ -4,9 +4,9 @@ using StoreAPI_CP2.Entities;
 
 namespace StoreAPI_CP2.Controllers
 {
-    [Route("api/cliente")]
     [ApiController]
-    public class ClienteController : Controller
+    [Route("api/cliente")]
+    public class ClienteController : ControllerBase
     {
         private readonly ApplicationContext _context;
 
@@ -16,102 +16,66 @@ namespace StoreAPI_CP2.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetClientes()
+        public IActionResult Get()
         {
-            try
-            {
-                var resultado = _context.Cliente.ToList();
-
-                if (!resultado.Any())
-                    return NoContent();
-
-                return Ok(resultado);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var clientes = _context.Cliente.ToList();
+            return Ok(clientes);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCliente(int id)
+        public IActionResult GetById(int id)
         {
-            try
-            {
-                var cliente = _context.Cliente.FirstOrDefault(x => x.Id == id);
+            var cliente = _context.Cliente.Find(id);
 
-                if (cliente is null)
-                    return NotFound();
+            if (cliente == null)
+                return NotFound();
 
-                return Ok(cliente);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(cliente);
         }
 
         [HttpPost]
-        public IActionResult AddCliente(ClienteEntity model)
+        public IActionResult Create(ClienteEntity cliente)
         {
-            try
-            {
-                _context.Cliente.Add(model);
-                _context.SaveChanges();
+            if (cliente == null)
+                return BadRequest();
 
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _context.Cliente.Add(cliente);
+            _context.SaveChanges();
+
+            return Ok(cliente);
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditCliente(int id, ClienteEntity model)
+        public IActionResult Update(int id, ClienteEntity cliente)
         {
-            try
-            {
-                var cliente = _context.Cliente.FirstOrDefault(x => x.Id == id);
+            var clienteExistente = _context.Cliente.Find(id);
 
-                if (cliente is null)
-                    return NotFound();
+            if (clienteExistente == null)
+                return NotFound();
 
-                cliente.Nome = model.Nome;
-                cliente.CPF = model.CPF;
-                cliente.Email = model.Email;
-                cliente.Telefone = model.Telefone;
+            if (cliente == null)
+                return BadRequest();
 
-                _context.Cliente.Update(cliente);
-                _context.SaveChanges();
+            clienteExistente.Nome = cliente.Nome;
+            clienteExistente.Email = cliente.Email;
 
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _context.SaveChanges();
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCliente(int id)
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                var cliente = _context.Cliente.FirstOrDefault(x => x.Id == id);
+            var cliente = _context.Cliente.Find(id);
 
-                if (cliente is null)
-                    return NotFound();
+            if (cliente == null)
+                return NotFound();
 
-                _context.Cliente.Remove(cliente);
-                _context.SaveChanges();
+            _context.Cliente.Remove(cliente);
+            _context.SaveChanges();
 
-                return Ok(cliente);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return NoContent();
         }
     }
 }

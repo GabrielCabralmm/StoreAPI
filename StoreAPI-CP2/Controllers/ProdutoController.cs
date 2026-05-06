@@ -4,11 +4,10 @@ using StoreAPI_CP2.Entities;
 
 namespace StoreAPI_CP2.Controllers
 {
-    [Route("api/produto")]
     [ApiController]
-    public class ProdutoController : Controller
+    [Route("api/produto")]
+    public class ProdutoController : ControllerBase
     {
-
         private readonly ApplicationContext _context;
 
         public ProdutoController(ApplicationContext context)
@@ -17,102 +16,65 @@ namespace StoreAPI_CP2.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProdutos()
+        public IActionResult Get()
         {
-            try
-            {
-                var resultado = _context.Produto.ToList();
-
-                if (!resultado.Any())
-                    return NoContent();
-
-                return Ok(resultado);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var produtos = _context.Produto.ToList();
+            return Ok(produtos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetProduto(int id)
+        public IActionResult GetById(int id)
         {
-            try
-            {
-                var produto = _context.Produto.FirstOrDefault(x => x.Id == id);
+            var produto = _context.Produto.Find(id);
 
-                if (produto is null)
-                    return NotFound();
+            if (produto == null)
+                return NotFound();
 
-                return Ok(produto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(produto);
         }
 
         [HttpPost]
-        public IActionResult AddProduto(ProdutoEntity model)
+        public IActionResult Create(ProdutoEntity produto)
         {
-            try
-            {
-                _context.Produto.Add(model);
-                _context.SaveChanges();
+            if (produto == null)
+                return BadRequest();
 
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _context.Produto.Add(produto);
+            _context.SaveChanges();
+
+            return Ok(produto);
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditProduto(int id, ProdutoEntity model)
+        public IActionResult Update(int id, ProdutoEntity produto)
         {
-            try
-            {
-                var produto = _context.Produto.FirstOrDefault(x => x.Id == id);
+            var produtoExistente = _context.Produto.Find(id);
 
-                if (produto is null)
-                    return NotFound();
+            if (produtoExistente == null)
+                return NotFound();
 
-                produto.Produto = model.Produto;
-                produto.Categoria = model.Categoria;
-                produto.Preco = model.Preco;
-                produto.QtdEstoque = model.QtdEstoque;
+            if (produto == null)
+                return BadRequest();
 
-                _context.Produto.Update(produto);
-                _context.SaveChanges();
+            produtoExistente.Produto = produto.Produto;
 
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _context.SaveChanges();
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduto(int id)
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                var produto = _context.Produto.FirstOrDefault(x => x.Id == id);
+            var produto = _context.Produto.Find(id);
 
-                if (produto is null)
-                    return NotFound();
+            if (produto == null)
+                return NotFound();
 
-                _context.Produto.Remove(produto);
-                _context.SaveChanges();
+            _context.Produto.Remove(produto);
+            _context.SaveChanges();
 
-                return Ok(produto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return NoContent();
         }
     }
 }
