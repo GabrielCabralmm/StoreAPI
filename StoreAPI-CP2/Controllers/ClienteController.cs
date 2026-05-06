@@ -67,6 +67,7 @@ namespace StoreAPI_CP2.Controllers
             }
         }
 
+        [HttpPut("{id}")]
         public IActionResult EditCliente(int id, ClienteEntity model)
         {
             try

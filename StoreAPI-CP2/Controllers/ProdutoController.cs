@@ -21,7 +21,7 @@ namespace StoreAPI_CP2.Controllers
         {
             try
             {
-                var resultado = _context.Cliente.ToList();
+                var resultado = _context.Produto.ToList();
 
                 if (!resultado.Any())
                     return NoContent();
@@ -68,6 +68,7 @@ namespace StoreAPI_CP2.Controllers
             }
         }
 
+        [HttpPut("{id}")]
         public IActionResult EditProduto(int id, ProdutoEntity model)
         {
             try
