@@ -133,3 +133,9 @@ StoreAPI_CP2
 ✔ Swagger ativo
 
 ---
+
+## 👥 Integrantes
+
+* RM563734 - Enzo Monteiro Maciel
+* RM563230 - Gabriel Cabral Mendes Mariano
+* RM563557 - Matheus de Almeida Sousa
